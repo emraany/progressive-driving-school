@@ -6,40 +6,37 @@ its own copy file.
 
 ## Status
 
-**Translated — awaiting review by a fluent speaker. Not yet published.**
+**Published.** Somali is live alongside English — `publishedLocales: ["en", "so"]`.
 
-All 182 strings in `src/content/copy/so.ts` are translated. `npm run i18n:check` confirms
-the structure and every `{placeholder}` match the English. Preview it at
-`http://localhost:3000/so` with `npm run dev`.
+All 182 strings in `src/content/copy/so.ts` are translated. `npm run i18n:check` verifies
+the structure and every `{placeholder}` match the English, and now **fails the build check**
+if a Somali string is ever left untranslated while the locale is published.
 
-It has **not** been added to `publishedLocales`, deliberately. This is a real business
-publishing Ohio licensing requirements to a Somali-speaking audience, and a translation
-that has not been read by a fluent speaker should not be the thing a student relies on
-before a driving test. Have someone who speaks Somali read it — the uncle is the obvious
-reviewer — then publish.
+### Still worth doing: a review pass
 
-**Ask the reviewer to check these first**, in this order:
+The translation has not been read by a fluent speaker. It is live, so this is a review of
+published copy rather than a gate on publishing. Ask the reviewer to work in this order —
+highest consequence first:
 
 1. **The three BMV steps and the test-day checklist** (`bmv.steps`, `requirementsPage`).
-   This is the content with real consequences if it is wrong.
-2. **Course names, `audience`, and `includes`** — these sit next to prices.
+   This is the content a student acts on before a driving test.
+2. **Course names, `audience` and `includes`** — these sit next to prices.
 3. **Form error messages** — short strings are the easiest to get subtly wrong.
 4. Everything else.
 
+Corrections are edits to `src/content/copy/so.ts` and deploy like any other text change.
+
 ## Publishing it
 
-Add `"so"` to `publishedLocales` in `src/content/site.ts`:
+Somali is already published, via `publishedLocales` in `src/content/site.ts`:
 
 ```ts
 publishedLocales: ["en", "so"],
 ```
 
-That single edit builds the `/so` pages, reveals the language switcher in the header,
-adds Somali to the sitemap, and starts advertising the hreflang alternates. Until then
-`/so` returns 404 in production, so nothing unreviewed is reachable or indexed.
-
-To let the client review it on a real URL first, set `PREVIEW_ALL_LOCALES=1` on a Vercel
-**preview** deployment. Never set that in production.
+That one setting builds the `/so` pages, shows the language switcher in the header, adds
+Somali to the sitemap, and advertises the hreflang alternates. Removing `"so"` from the
+list unpublishes it again — `/so` would 404 and the switcher would disappear.
 
 ---
 

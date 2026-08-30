@@ -80,7 +80,7 @@ export const site: SiteConfig = {
   // TODO(client): registration destination URL.
   registerUrl: null,
 
-  publishedLocales: ["en"],
+  publishedLocales: ["en", "so"],
 
   // TODO: replace with the real domain once one is purchased.
   url: "https://progressive-driving-school.vercel.app",

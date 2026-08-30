@@ -3,7 +3,7 @@
 Marketing site for Progressive Driving School LLC, Columbus, Ohio.
 Next.js (App Router) + TypeScript + Tailwind v4, statically generated, hosted on Vercel.
 
-English is live. Somali is fully built but not published — see
+English and Somali are both live — see
 [docs/TRANSLATION.md](docs/TRANSLATION.md).
 
 ```bash
@@ -105,9 +105,10 @@ src/
 scripts/               i18n and link checks
 ```
 
-`/` redirects to `/en` (configured in `next.config.ts`). Somali pages are excluded from
-the production build until published, so `/so` returns 404 rather than showing an
-unfinished translation.
+`/` redirects to `/en` (configured in `next.config.ts`). Both locales are published, so
+`/en` and `/so` are each statically generated. A locale removed from `publishedLocales`
+stops being built and returns 404, which is how an unfinished translation is kept out of
+production.
 
 ---
 
