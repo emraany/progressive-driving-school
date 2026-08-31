@@ -38,44 +38,84 @@ export interface SubmitResult {
   detail?: string;
 }
 
+/** Requests that hang are worse than requests that fail: the visitor stares at
+ *  a "Sending..." button with no way forward. Cap them. */
+const TIMEOUT_MS = 20_000;
+
+async function post(
+  url: string,
+  body: unknown,
+  headers: Record<string, string>,
+): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  try {
+    return await fetch(url, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/**
+ * Always resolves, never throws.
+ *
+ * fetch() rejects on a dropped connection, DNS failure, CORS rejection or an
+ * aborted timeout. If any of those escaped, the form would sit on "Sending..."
+ * for ever and the visitor would never see the phone-number fallback - which
+ * is the whole point of the error state. So every path returns a result.
+ */
 export async function submitContact(
   payload: SubmitPayload,
 ): Promise<SubmitResult> {
-  if (activeTransport() === "resend") {
-    const res = await fetch("/api/contact", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) return { ok: false, detail: `api/contact ${res.status}` };
-    return { ok: true };
+  try {
+    if (activeTransport() === "resend") {
+      const res = await post("/api/contact", payload, {
+        "content-type": "application/json",
+      });
+      return res.ok
+        ? { ok: true }
+        : { ok: false, detail: `api/contact ${res.status}` };
+    }
+
+    const key = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
+    if (!key) {
+      return { ok: false, detail: "NEXT_PUBLIC_WEB3FORMS_KEY is not set" };
+    }
+
+    const res = await post(
+      "https://api.web3forms.com/submit",
+      {
+        access_key: key,
+        subject: payload.subject,
+        from_name: "Progressive Driving School website",
+        name: payload.name,
+        phone: payload.phone,
+        email: payload.email,
+        preferred_language: payload.languageLabel,
+        course: payload.courseLabel,
+        message: payload.message,
+        site_language: payload.locale,
+        // Web3Forms' own honeypot field name.
+        botcheck: payload.company,
+      },
+      { "content-type": "application/json", accept: "application/json" },
+    );
+
+    if (!res.ok) return { ok: false, detail: `web3forms ${res.status}` };
+    const body = (await res.json()) as { success?: boolean; message?: string };
+    return body.success ? { ok: true } : { ok: false, detail: body.message };
+  } catch (err) {
+    const aborted = err instanceof Error && err.name === "AbortError";
+    return {
+      ok: false,
+      detail: aborted
+        ? `timed out after ${TIMEOUT_MS}ms`
+        : `network error: ${err instanceof Error ? err.message : String(err)}`,
+    };
   }
-
-  const key = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
-  if (!key) {
-    return { ok: false, detail: "NEXT_PUBLIC_WEB3FORMS_KEY is not set" };
-  }
-
-  const res = await fetch("https://api.web3forms.com/submit", {
-    method: "POST",
-    headers: { "content-type": "application/json", accept: "application/json" },
-    body: JSON.stringify({
-      access_key: key,
-      subject: payload.subject,
-      from_name: "Progressive Driving School website",
-      name: payload.name,
-      phone: payload.phone,
-      email: payload.email,
-      preferred_language: payload.languageLabel,
-      course: payload.courseLabel,
-      message: payload.message,
-      site_language: payload.locale,
-      // Web3Forms' own honeypot field name.
-      botcheck: payload.company,
-    }),
-  });
-
-  if (!res.ok) return { ok: false, detail: `web3forms ${res.status}` };
-  const body = (await res.json()) as { success?: boolean; message?: string };
-  return body.success ? { ok: true } : { ok: false, detail: body.message };
 }
