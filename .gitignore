@@ -42,3 +42,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local diagnostic page, not part of the site
+/public/web3forms-test.html

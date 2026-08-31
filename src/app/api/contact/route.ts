@@ -22,7 +22,7 @@ export async function POST(request: Request) {
   }
 
   let body: ContactValues & {
-    company?: string;
+    botcheck?: boolean;
     locale?: string;
     courseLabel?: string;
     languageLabel?: string;
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
   }
 
   // Honeypot: accept and discard, so a bot sees success and doesn't retry.
-  if (body.company) return NextResponse.json({ ok: true });
+  if (body.botcheck) return NextResponse.json({ ok: true });
 
   const errors = validateContact(body);
   if (Object.keys(errors).length > 0) {

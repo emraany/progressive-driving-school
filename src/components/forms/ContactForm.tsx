@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { copy } from "@/content/copy";
 import { site } from "@/content/site";
 import { buttonClasses } from "@/components/ui/Button";
@@ -73,13 +73,6 @@ export function ContactForm({
   const [errors, setErrors] = useState<ContactErrors>({});
   const [status, setStatus] = useState<Status>("idle");
   const honeypot = useRef<HTMLInputElement>(null);
-  // Set after mount rather than during render: reading the clock while
-  // rendering is impure, and this only needs to be a rough "when did the form
-  // appear" marker for the bot time-trap below.
-  const mountedAt = useRef(0);
-  useEffect(() => {
-    mountedAt.current = Date.now();
-  }, []);
 
   const f = copy.form;
   const id = (name: string) => `${uid}-${name}`;
@@ -100,11 +93,11 @@ export function ContactForm({
       return;
     }
 
-    // Bots fill the hidden field, and bots submit instantly. People do neither.
-    const trapped =
-      Boolean(honeypot.current?.value) ||
-      (mountedAt.current > 0 && Date.now() - mountedAt.current < 2000);
-    if (trapped) {
+    // Bots tick the hidden checkbox; people never see it. Deliberately still
+    // reports success so a bot does not learn it was caught - but it is logged,
+    // because a false positive here silently loses a real enquiry.
+    if (honeypot.current?.checked) {
+      console.warn("Contact form: honeypot triggered, submission not sent.");
       setStatus("success");
       return;
     }
@@ -121,7 +114,7 @@ export function ContactForm({
       courseLabel,
       languageLabel,
       subject: `Website enquiry from ${values.name}`,
-      company: honeypot.current?.value ?? "",
+      botcheck: honeypot.current?.checked ?? false,
     });
 
     if (!result.ok) console.error("Contact form failed:", result.detail);
@@ -286,14 +279,21 @@ export function ContactForm({
         />
       </Field>
 
-      {/* Honeypot. Off-screen rather than display:none, and never focusable. */}
+      {/* Honeypot.
+
+          A CHECKBOX, not a text input, and named botcheck rather than company.
+          The previous version was <input type="text" name="company">, which
+          Chrome's autofill recognises as a real profile field and fills in -
+          autocomplete="off" is widely ignored. Real visitors were being flagged
+          as bots and their messages silently dropped. Autofill never ticks
+          checkboxes, so this cannot misfire the same way. */}
       <div aria-hidden="true" className="absolute -left-[9999px] h-0 overflow-hidden">
-        <label htmlFor={id("company")}>Company</label>
+        <label htmlFor={id("botcheck")}>Leave this box unchecked</label>
         <input
           ref={honeypot}
-          id={id("company")}
-          name="company"
-          type="text"
+          id={id("botcheck")}
+          name="botcheck"
+          type="checkbox"
           tabIndex={-1}
           autoComplete="off"
         />

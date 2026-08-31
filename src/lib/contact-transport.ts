@@ -28,8 +28,8 @@ export interface SubmitPayload extends ContactValues {
   courseLabel: string;
   languageLabel: string;
   subject: string;
-  /** Honeypot. Must be empty - bots fill it in, people never see it. */
-  company: string;
+  /** Honeypot. Must be false - bots tick it, people never see it. */
+  botcheck: boolean;
 }
 
 export interface SubmitResult {
@@ -101,7 +101,7 @@ export async function submitContact(
         message: payload.message,
         site_language: payload.locale,
         // Web3Forms' own honeypot field name.
-        botcheck: payload.company,
+        botcheck: payload.botcheck,
       },
       { "content-type": "application/json", accept: "application/json" },
     );
