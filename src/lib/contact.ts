@@ -13,8 +13,7 @@ export interface ContactValues {
 export type ContactErrorKey =
   | "nameRequired"
   | "contactRequired"
-  | "emailInvalid"
-  | "messageRequired";
+  | "emailInvalid";
 
 export type ContactErrors = Partial<Record<keyof ContactValues, ContactErrorKey>>;
 
@@ -33,8 +32,6 @@ export function validateContact(values: ContactValues): ContactErrors {
   if (values.email.trim() && !EMAIL.test(values.email.trim())) {
     errors.email = "emailInvalid";
   }
-
-  if (!values.message.trim()) errors.message = "messageRequired";
 
   return errors;
 }
@@ -61,7 +58,7 @@ export function formatContactEmail(
     `Course of interest: ${meta.courseLabel || "-"}`,
     "",
     "Message:",
-    values.message,
+    values.message.trim() || "(none given)",
     "",
     `— Sent from the ${meta.locale} version of the website.`,
   ].join("\n");

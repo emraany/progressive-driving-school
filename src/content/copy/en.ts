@@ -343,7 +343,6 @@ export const en = {
       nameRequired: "Please tell us your name.",
       contactRequired: "Please give us a phone number or an email address.",
       emailInvalid: "That email address doesn't look right.",
-      messageRequired: "Please tell us how we can help.",
     },
   },
 

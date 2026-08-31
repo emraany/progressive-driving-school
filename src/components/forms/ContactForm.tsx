@@ -264,6 +264,7 @@ export function ContactForm({
       <Field
         id={id("message")}
         label={f.messageLabel}
+        optional={f.optionalSuffix}
         error={errors.message ? f.errors[errors.message] : undefined}
       >
         <textarea

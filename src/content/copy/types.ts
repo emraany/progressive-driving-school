@@ -209,7 +209,6 @@ export interface Copy {
       nameRequired: string;
       contactRequired: string;
       emailInvalid: string;
-      messageRequired: string;
     };
   };
 
