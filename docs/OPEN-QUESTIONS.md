@@ -49,8 +49,9 @@ where an answer is missing, the site says so and points at the phone.
 
 ## Operational
 
-- [ ] **Domain.** None yet. The contact form works without one; a branded email sender
-      needs one.
+- [ ] **Point the domain at Vercel.** `progressivedrivingschoolohio.com` is chosen and
+      set in `site.url`. It still needs adding under Vercel → Settings → Domains with its
+      DNS records, and a branded email sender (Resend) becomes possible once it resolves.
 - [ ] **Web3Forms access key** — required before the contact form works at all.
 - [ ] **Who monitors the Gmail inbox, and how quickly?** Should submitters get an
       automatic acknowledgement?
@@ -92,6 +93,8 @@ business name was right. Both are now confirmed — see Resolved.)
 ---
 
 ## Resolved
+
+- **Domain chosen (30 August 2026):** `www.progressivedrivingschoolohio.com`.
 
 - **Hours confirmed (30 August 2026), and they resolve an earlier contradiction.** The
   original brief said 9 AM–5 PM, which could not accommodate an 8-hour driving course.

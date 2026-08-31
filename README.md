@@ -175,8 +175,11 @@ own forms page still advertises it. They will rot again.
 Push to GitHub, import the repo in Vercel, and set the environment variables from
 `.env.example`. Nothing else to configure — no database, no CMS, no build settings.
 
-Before the first production deploy, set `site.url` to the real domain. It is used for
-canonical URLs, the sitemap and structured data.
+`site.url` is set to `https://www.progressivedrivingschoolohio.com`, which feeds canonical
+URLs, the sitemap, structured data and link-preview cards. Add the domain in Vercel
+(Project → Settings → Domains) and point its DNS there; until that is done the site is
+reachable at its `.vercel.app` address while telling search engines its canonical home is
+the custom domain.
 
 ---
 

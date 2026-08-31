@@ -7,9 +7,17 @@ import { navItems } from "@/lib/nav";
 import { Container } from "@/components/ui/Container";
 import { ExternalLink } from "@/components/ui/ExternalLink";
 
-function ColumnHeading({ children }: { children: React.ReactNode }) {
+function ColumnHeading({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <h2 className="mb-4 font-sans text-xs font-semibold tracking-[0.14em] text-brand-200 uppercase">
+    <h2
+      className={`mb-4 font-sans text-xs font-semibold tracking-[0.14em] text-brand-200 uppercase ${className}`}
+    >
       {children}
     </h2>
   );
@@ -53,6 +61,11 @@ export function Footer() {
                 </li>
               ))}
             </ul>
+
+            <ColumnHeading className="mt-8">
+              {copy.footer.serviceAreaHeading}
+            </ColumnHeading>
+            <p className="text-sm text-brand-200">{site.serviceArea.join(" · ")}</p>
           </div>
 
           <div className="space-y-8">
@@ -83,22 +96,8 @@ export function Footer() {
                 {copy.hours.officeHeading}
               </p>
               <p className="text-sm text-brand-200">{officeHours()}</p>
-              <p className="mt-3 text-sm font-medium text-white">
-                {copy.hours.drivesHeading}
-              </p>
-              {site.hours.drives.map((block) => (
-                <p key={block.days} className="text-sm text-brand-200">
-                  {block.days}: {block.slots.join(", ")}
-                </p>
-              ))}
             </div>
 
-            <div>
-              <ColumnHeading>{copy.footer.serviceAreaHeading}</ColumnHeading>
-              <p className="text-sm text-brand-200">
-                {site.serviceArea.join(" · ")}
-              </p>
-            </div>
           </div>
 
           <div>
@@ -120,6 +119,32 @@ export function Footer() {
               ))}
             </ul>
           </div>
+        </div>
+
+        {/* Lesson times need their own row. Inside a quarter-width footer
+            column the slot lists wrapped mid-range - "6:00" on one line and
+            "- 8:00 PM" on the next - which read as broken. Across the full
+            width the three day-groups sit side by side and each slot stays
+            on one line. */}
+        <div className="border-t border-white/10 py-9">
+          <ColumnHeading>{copy.hours.drivesHeading}</ColumnHeading>
+          <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
+            {site.hours.drives.map((block) => (
+              <div key={block.days}>
+                <p className="text-sm font-semibold text-white">{block.days}</p>
+                <ul className="mt-2 space-y-1 text-sm text-brand-200">
+                  {block.slots.map((slot) => (
+                    <li key={slot} className="whitespace-nowrap">
+                      {slot}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-brand-300">
+            {copy.hours.drivesNote}
+          </p>
         </div>
 
         <div className="border-t border-white/10 py-7 text-xs leading-relaxed text-brand-300">

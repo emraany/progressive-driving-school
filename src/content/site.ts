@@ -111,8 +111,7 @@ export const site: SiteConfig = {
 
   registerUrl: "https://form.jotform.com/262005642367050",
 
-  // TODO: replace with the real domain once one is purchased.
-  url: "https://progressive-driving-school.vercel.app",
+  url: "https://www.progressivedrivingschoolohio.com",
 
   social: {
     google: null,
