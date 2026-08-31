@@ -35,9 +35,9 @@ export interface MediaEntry {
 }
 
 export const media: Record<MediaSlot, MediaEntry> = {
-  heroPrimary: { src: null, aspect: "4 / 3", width: 1600, height: 1200, priority: true },
+  heroPrimary: { src: "/images/road-ahead.svg", aspect: "4 / 3", width: 1600, height: 1200, priority: true },
   coursesBanner: { src: null, aspect: "16 / 9", width: 1920, height: 1080 },
   trustPortrait: { src: null, aspect: "3 / 4", width: 1200, height: 1600 },
-  requirementsBanner: { src: null, aspect: "16 / 9", width: 1920, height: 1080 },
+  requirementsBanner: { src: "/images/road-overhead.svg", aspect: "16 / 9", width: 1920, height: 1080 },
   contactExterior: { src: null, aspect: "3 / 2", width: 1800, height: 1200 },
 };

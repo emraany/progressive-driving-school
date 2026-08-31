@@ -68,9 +68,14 @@ value.
 
 ### Photography
 
-Image slots are declared in `src/content/media.ts` with their final aspect ratios already
-reserved, so the layout is identical before and after photos arrive — no reflow, no
-layout shift, nothing to restructure.
+Two slots currently hold neutral vector artwork in `public/images/` — a road heading
+toward an abstract Columbus skyline, and a road seen from above. They are drawn in the
+brand palette, contain no people, and exist so the pages are not waiting on photography.
+Both are a few kilobytes and scale to any screen.
+
+Replace them with real photographs the moment those exist. Image slots are declared in
+`src/content/media.ts` with their final aspect ratios already reserved, so the layout is
+identical before and after — no reflow, no layout shift, nothing to restructure.
 
 1. Export stills at **2000px wide or larger**.
 2. Save into `public/images/`.

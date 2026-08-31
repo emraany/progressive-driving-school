@@ -368,10 +368,10 @@ export const en = {
 
   media: {
     heroPrimary:
-      "A Progressive Driving School instructor and student beside a training car",
+      "Illustration of an open road leading toward the Columbus skyline",
     coursesBanner: "A Progressive Driving School training vehicle",
     trustPortrait: "A Progressive Driving School driving instructor",
-    requirementsBanner: "A student driver at the wheel during a lesson",
+    requirementsBanner: "Illustration of a road marked with lane lines",
     contactExterior: "The entrance to the Progressive Driving School office",
   },
 } satisfies Copy;

@@ -32,6 +32,9 @@ export function Figure({
 }) {
   const entry = media[slot];
   const shape = `${rounded ? "rounded-(--radius-card)" : ""} overflow-hidden`;
+  // Next's image optimiser refuses SVG by design. Ours are local files we
+  // authored, so serve them untouched rather than loosening that setting.
+  const isVector = entry.src?.endsWith(".svg") ?? false;
 
   if (!entry.src) {
     return (
@@ -63,6 +66,7 @@ export function Figure({
         fill
         sizes={sizes}
         priority={entry.priority}
+        unoptimized={isVector}
         className="object-cover"
       />
     </div>
