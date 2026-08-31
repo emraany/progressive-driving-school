@@ -13,11 +13,6 @@ where an answer is missing, the site says so and points at the phone.
       single 9–5 day, and adult learners typically need evenings and weekends. Until this
       is answered the site shows the time range plus "Call to confirm", and structured
       data omits `openingHours` entirely.
-- [ ] **Confirm the $600 / $550 pricing.** ⚠️ **Highest-risk number on the site.**
-      $600 (24-hour online + 8-hour drive) minus $550 (8-hour drive only) prices 24 hours
-      of classroom instruction at **$50**. The other two courses are internally
-      consistent at roughly $67–69 per driving hour. Verify this is not a typo before
-      launch.
 - [ ] **Ohio driver training school licence number.** Needed for the trust section, and
       it is the strongest credibility signal the site can carry.
 - [ ] **Is the school listed in the state's approved-school lookup?**
@@ -76,20 +71,17 @@ where an answer is missing, the site says so and points at the phone.
 
 ## Contradictions and risks found in the brief
 
-1. **The pricing delta is anomalous.** See above. The single most important thing to
-   confirm before this site goes live.
-
-2. **Hours don't fit the service.** 9 AM – 5 PM, no days given, against an 8-hour driving
+1. **Hours don't fit the service.** 9 AM – 5 PM, no days given, against an 8-hour driving
    course and an audience of working adults.
 
-3. **The audience and the FAQ point in opposite directions.** The brief says the business
+2. **The audience and the FAQ point in opposite directions.** The brief says the business
    skews adult (21+), but every piece of supplied FAQ material covers only the 18–20
    Class D path. The $800 adult course — the most expensive product — has no supporting
    content at all. The requirements page handles this honestly: it states that the steps
    apply to ages 18–20 and routes 21+ visitors to a phone call. That is a stopgap, not a
    solution.
 
-4. **The BMV 5791 link the client supplied was dead.** `publicsafety.ohio.gov/links/
+3. **The BMV 5791 link the client supplied was dead.** `publicsafety.ohio.gov/links/
    bmv5791.pdf` returned 404, verified along with four other URL patterns. The BMV's own
    forms page still advertises it, so this is the state's broken link rather than a
    transcription error. The site now uses
@@ -97,7 +89,7 @@ where an answer is missing, the site says so and points at the phone.
    current version including the hour log). The original URL is preserved in a comment in
    `src/content/bmv.ts`. `npm run links:check` guards against a repeat.
 
-5. **Possible omission on the affidavit.** Public BMV guidance describes form BMV 5791 as
+4. **Possible omission on the affidavit.** Public BMV guidance describes form BMV 5791 as
    **notarised** for applicants under 21. The client's summary says only "completed". His
    wording has not been altered — but a student who arrives un-notarised fails the
    appointment, so this needs confirming.
@@ -108,6 +100,10 @@ business name was right. Both are now confirmed — see Resolved.)
 ---
 
 ## Resolved
+
+- **Pricing confirmed by the client (30 August 2026).** $600 / $550 / $800 are correct as
+  given. The $50 gap between the 24-hour-plus-drive package and the drive-only course is
+  intentional, not a typo.
 
 - **Legal name** — the logo artwork reads "PROGRESSIVE DRIVING SCHOOL LLC · COLUMBUS, OH",
   confirming both the name and the city. The site shows the short name in headings and the
