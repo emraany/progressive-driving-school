@@ -4,13 +4,16 @@ import { media, type MediaSlot } from "@/content/media";
 /**
  * An image slot.
  *
- * Photography arrives later. Until then this renders a neutral placeholder at
- * exactly the aspect ratio the real photo will occupy, so the page is laid out
- * identically before and after - no reflow when images land, and no layout
- * shift for visitors.
+ * Renders nothing until a real photograph exists. An empty slot used to draw a
+ * neutral placeholder block, which reads to a visitor as a broken image rather
+ * than as "a photo is coming" - so callers ask hasMedia() and lay out without
+ * the image instead.
+ *
+ * Once `src` is set the aspect ratio is still reserved up front, so the image
+ * cannot shift the layout as it loads.
  *
  * To fill a slot: drop the file into public/images/ and set `src` in
- * src/content/media.ts. Nothing here changes.
+ * src/content/media.ts.
  */
 export function Figure({
   slot,
@@ -29,17 +32,7 @@ export function Figure({
   const entry = media[slot];
   const shape = `${rounded ? "rounded-(--radius-card)" : ""} overflow-hidden`;
 
-  if (!entry.src) {
-    return (
-      <div
-        aria-hidden="true"
-        style={{ aspectRatio: entry.aspect }}
-        className={`${shape} relative w-full border border-line bg-surface-sunken ${className}`}
-      >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_25%,var(--color-brand-100),transparent_62%)] opacity-70" />
-      </div>
-    );
-  }
+  if (!entry.src) return null;
 
   return (
     <div

@@ -13,6 +13,7 @@ import {
   type BmvLinkKey,
 } from "@/content/bmv";
 import { copy } from "@/content/copy";
+import { hasMedia } from "@/content/media";
 import { renderBmv } from "@/lib/copy-render";
 import { formatVerifiedDate, interpolate } from "@/lib/format";
 import { buildMetadata } from "@/lib/seo";
@@ -26,23 +27,30 @@ export const metadata: Metadata = buildMetadata({
 
 export default function RequirementsPage() {
   const page = copy.requirementsPage;
+  const showBanner = hasMedia("requirementsBanner");
   const linkKeys = Object.keys(bmv.links) as BmvLinkKey[];
 
   return (
     <>
       <Section tone="raised" className="border-b border-line" width="wide">
-        <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+        <div
+          className={`grid items-center gap-10 lg:gap-16 ${
+            showBanner ? "lg:grid-cols-[1.15fr_0.85fr]" : ""
+          }`}
+        >
           <div>
             <SectionHeader heading={page.heading} lede={page.intro} />
             <p className="mt-6 max-w-xl rounded-lg bg-brand-50 px-4 py-3 text-sm leading-relaxed text-brand-800">
               {page.audienceNote}
             </p>
           </div>
-          <Figure
-            slot="requirementsBanner"
-            alt={copy.media.requirementsBanner}
-            sizes="(min-width: 1024px) 40vw, 100vw"
-          />
+          {showBanner ? (
+            <Figure
+              slot="requirementsBanner"
+              alt={copy.media.requirementsBanner}
+              sizes="(min-width: 1024px) 40vw, 100vw"
+            />
+          ) : null}
         </div>
       </Section>
 
