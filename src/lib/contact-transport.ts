@@ -24,7 +24,6 @@ export function activeTransport(): ContactTransport {
 }
 
 export interface SubmitPayload extends ContactValues {
-  locale: string;
   courseLabel: string;
   languageLabel: string;
   subject: string;
@@ -99,7 +98,6 @@ export async function submitContact(
         preferred_language: payload.languageLabel,
         course: payload.courseLabel,
         message: payload.message,
-        site_language: payload.locale,
         // Web3Forms' own honeypot field name.
         botcheck: payload.botcheck,
       },

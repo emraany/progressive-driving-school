@@ -110,7 +110,6 @@ export function ContactForm({
 
     const result = await submitContact({
       ...values,
-      locale: "en",
       courseLabel,
       languageLabel,
       subject: `Website enquiry from ${values.name}`,

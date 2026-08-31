@@ -23,7 +23,6 @@ export async function POST(request: Request) {
 
   let body: ContactValues & {
     botcheck?: boolean;
-    locale?: string;
     courseLabel?: string;
     languageLabel?: string;
     subject?: string;
@@ -43,7 +42,6 @@ export async function POST(request: Request) {
   }
 
   const text = formatContactEmail(body, {
-    locale: body.locale ?? "en",
     courseLabel: body.courseLabel ?? "",
     languageLabel: body.languageLabel ?? "",
   });

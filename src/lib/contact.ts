@@ -48,7 +48,7 @@ export const emptyContactValues: ContactValues = {
 /** Plain-text body, used by whichever transport is active. */
 export function formatContactEmail(
   values: ContactValues,
-  meta: { locale: string; courseLabel: string; languageLabel: string },
+  meta: { courseLabel: string; languageLabel: string },
 ): string {
   return [
     `Name: ${values.name}`,
@@ -60,6 +60,6 @@ export function formatContactEmail(
     "Message:",
     values.message.trim() || "(none given)",
     "",
-    `— Sent from the ${meta.locale} version of the website.`,
+    "— Sent from the Progressive Driving School website.",
   ].join("\n");
 }
