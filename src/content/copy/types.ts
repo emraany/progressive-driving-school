@@ -169,6 +169,12 @@ export interface Copy {
     directionsLink: string;
   };
 
+  hours: {
+    officeHeading: string;
+    drivesHeading: string;
+    drivesNote: string;
+  };
+
   courses: Record<CourseId, CourseCopy>;
 
   bmv: {

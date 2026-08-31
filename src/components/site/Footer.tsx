@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { bmv, bmvPlaceholders, type BmvLinkKey } from "@/content/bmv";
 import { copy } from "@/content/copy";
-import { formatAddress, hoursRange, mapsUrl, site } from "@/content/site";
+import { formatAddress, officeHours, mapsUrl, site } from "@/content/site";
 import { interpolate } from "@/lib/format";
 import { navItems } from "@/lib/nav";
 import { Container } from "@/components/ui/Container";
@@ -79,16 +79,18 @@ export function Footer() {
 
             <div>
               <ColumnHeading>{copy.footer.hoursHeading}</ColumnHeading>
-              <p className="text-sm text-brand-200">{hoursRange()}</p>
-              {/* Days of the week are not confirmed. Rather than guess, the
-                  site says so and points at the phone. */}
-              {site.hours.days ? (
-                <p className="text-sm text-brand-200">{site.hours.days}</p>
-              ) : (
-                <p className="mt-1 text-sm text-brand-300">
-                  {copy.common.callToConfirm}
+              <p className="text-sm font-medium text-white">
+                {copy.hours.officeHeading}
+              </p>
+              <p className="text-sm text-brand-200">{officeHours()}</p>
+              <p className="mt-3 text-sm font-medium text-white">
+                {copy.hours.drivesHeading}
+              </p>
+              {site.hours.drives.map((block) => (
+                <p key={block.days} className="text-sm text-brand-200">
+                  {block.days}: {block.slots.join(", ")}
                 </p>
-              )}
+              ))}
             </div>
 
             <div>

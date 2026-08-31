@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { copy } from "@/content/copy";
-import { hoursRange, site } from "@/content/site";
+import { officeHoursShort, site } from "@/content/site";
 import { navItems, REGISTER_HREF } from "@/lib/nav";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
@@ -36,7 +36,9 @@ export function Header() {
               <span className="hidden text-brand-200 min-[360px]:inline">
                 {copy.common.languagesNote}
               </span>
-              <span className="hidden text-brand-200 md:inline">{hoursRange()}</span>
+              <span className="hidden text-brand-200 md:inline">
+                {officeHoursShort()}
+              </span>
             </div>
           </div>
         </Container>

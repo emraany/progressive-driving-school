@@ -196,6 +196,13 @@ export const en = {
     directionsLink: "Get directions",
   },
 
+  hours: {
+    officeHeading: "Office hours",
+    drivesHeading: "Driving lesson times",
+    drivesNote:
+      "Lessons are booked in advance. Call during office hours and we'll find a slot that works for you.",
+  },
+
   courses: {
     online24plus8: {
       name: "Online 24-Hour Course + 8-Hour Drive",

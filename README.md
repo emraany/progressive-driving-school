@@ -28,7 +28,7 @@ automatically. No build knowledge required.
 |---|---|---|
 | A price | `src/content/courses.ts` | Exact string, e.g. `"$600"`. Never reformatted. |
 | Phone, email, address | `src/content/site.ts` | Phone needs both `display` and `href`. |
-| Business hours | `src/content/site.ts` → `hours` | Set `days` once confirmed (see below). |
+| Business hours | `src/content/site.ts` → `hours` | Office hours and lesson slots are separate (see below). |
 | The registration link | `src/content/site.ts` → `registerUrl` | See "Register button" below. |
 | Ohio BMV rules or links | `src/content/bmv.ts` | Then bump `lastVerified`. |
 | Any visible text | `src/content/copy/en.ts` | One file, in page order. |
@@ -82,10 +82,20 @@ anyone's photo: consent from anyone identifiable, and no readable licence plates
 
 ### Business hours
 
-`site.hours.days` is `null` because the days of the week were never confirmed. While it
-is null the site shows the time range and "Call to confirm", and the structured data
-deliberately omits `openingHours` — publishing guessed hours as machine-readable fact is
-worse than publishing none. Set `days` and both fix themselves.
+Two different things, deliberately modelled separately:
+
+- **`hours.office`** — when someone answers the phone. Monday–Friday, 9:00 AM–3:00 PM.
+- **`hours.drives`** — when behind-the-wheel lessons actually run, as a list of day
+  ranges each with their own slots. These extend into evenings and weekends, which is
+  why they cannot be collapsed into one opening-hours range.
+
+Only the office hours go into structured data (`openingHoursSpecification`). Search
+engines render that as "open now / closed", which should mean "can I reach a person" —
+and during a lesson slot the instructor is in a car, not answering the phone.
+
+The office block carries both a display string and 24-hour `opens`/`closes` values. Keep
+them in sync when editing: the first is what visitors read, the second is what Google
+reads.
 
 ---
 

@@ -7,7 +7,7 @@ import { Section, SectionHeader } from "@/components/ui/Section";
 import { ClockIcon, MailIcon, MapIcon, PhoneIcon, PinIcon } from "@/components/ui/icons";
 import { copy } from "@/content/copy";
 import { courses } from "@/content/courses";
-import { formatAddress, hoursRange, mapsUrl, site } from "@/content/site";
+import { formatAddress, officeHours, mapsUrl, site } from "@/content/site";
 import { renderCourse } from "@/lib/copy-render";
 import { buildMetadata } from "@/lib/seo";
 
@@ -102,15 +102,31 @@ export default function ContactPage() {
               </InfoRow>
 
               <InfoRow icon={<ClockIcon />} heading={page.hoursHeading}>
-                <p>{hoursRange()}</p>
-                {/* Days of the week are unconfirmed - say so, don't guess. */}
-                {site.hours.days ? (
-                  <p>{site.hours.days}</p>
-                ) : (
-                  <p className="mt-1 text-sm text-ink-500">
-                    {copy.common.callToConfirm}
-                  </p>
-                )}
+                <p className="text-sm font-semibold text-ink-900">
+                  {copy.hours.officeHeading}
+                </p>
+                <p className="text-base">{officeHours()}</p>
+
+                {/* Lessons run outside office hours - evenings and weekends -
+                    which is the whole reason these are listed separately. */}
+                <p className="mt-4 text-sm font-semibold text-ink-900">
+                  {copy.hours.drivesHeading}
+                </p>
+                <dl className="mt-1 space-y-2">
+                  {site.hours.drives.map((block) => (
+                    <div key={block.days} className="sm:flex sm:gap-3">
+                      <dt className="text-base font-medium whitespace-nowrap">
+                        {block.days}
+                      </dt>
+                      <dd className="text-base text-ink-700">
+                        {block.slots.join(" · ")}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+                <p className="mt-3 text-sm leading-relaxed text-ink-500">
+                  {copy.hours.drivesNote}
+                </p>
               </InfoRow>
 
               <InfoRow icon={<MapIcon />} heading={page.serviceAreaHeading}>

@@ -7,10 +7,10 @@ const ORG_ID = `${site.url}/#organization`;
 /**
  * The business itself.
  *
- * NOTE: `openingHours` is deliberately absent. The client gave 9 AM - 5 PM but
- * never the days of the week, and publishing a guess in structured data is
- * worse than publishing nothing - search engines surface it as fact. Add it
- * here once `site.hours.days` is confirmed.
+ * openingHoursSpecification describes the OFFICE only, not lesson slots.
+ * Search engines render it as "open now / closed", which should mean "can I
+ * reach a person" - and outside office hours an instructor is in a car, not
+ * answering the phone. Lesson times are listed in the page copy instead.
  */
 export function organizationSchema() {
   const a = site.address;
@@ -36,6 +36,14 @@ export function organizationSchema() {
     areaServed: [
       { "@type": "AdministrativeArea", name: "Franklin County, Ohio" },
       { "@type": "City", name: "Columbus, Ohio" },
+    ],
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: site.hours.office.daysOfWeek,
+        opens: site.hours.office.opens,
+        closes: site.hours.office.closes,
+      },
     ],
     description: formatAddress(),
     // Somali-speaking service is a genuine differentiator for this business,

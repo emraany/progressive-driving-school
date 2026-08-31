@@ -21,10 +21,19 @@ export interface SiteConfig {
     country: string;
   };
   hours: {
-    open: string;
-    close: string;
-    /** null = days of the week not yet confirmed by the client. */
-    days: string | null;
+    /** When someone can ring the office and get an answer. */
+    office: {
+      days: string;
+      /** For structured data. schema.org day names. */
+      daysOfWeek: string[];
+      display: string;
+      /** 24-hour, for structured data. */
+      opens: string;
+      closes: string;
+    };
+    /** When behind-the-wheel lessons actually run. Different from the office,
+     *  and the reason lessons can be booked in the evening and at weekends. */
+    drives: { days: string; slots: string[] }[];
   };
   serviceArea: string[];
   /** Languages the school can serve students in. */
@@ -68,12 +77,32 @@ export const site: SiteConfig = {
   },
 
   hours: {
-    open: "9:00 AM",
-    close: "5:00 PM",
-    // TODO(client): days of the week were never given. Until this is filled in,
-    // the site says "call to confirm" and structured data omits openingHours
-    // entirely rather than publishing a guess.
-    days: null,
+    office: {
+      days: "Monday – Friday",
+      daysOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      display: "9:00 AM – 3:00 PM",
+      opens: "09:00",
+      closes: "15:00",
+    },
+    drives: [
+      {
+        days: "Monday – Thursday",
+        slots: [
+          "9:00 – 11:00 AM",
+          "11:30 AM – 1:30 PM",
+          "2:00 – 4:00 PM",
+          "6:00 – 8:00 PM",
+        ],
+      },
+      {
+        days: "Friday",
+        slots: ["2:15 – 4:15 PM"],
+      },
+      {
+        days: "Saturday – Sunday",
+        slots: ["11:30 AM – 1:30 PM", "2:00 – 4:00 PM", "6:00 – 8:00 PM"],
+      },
+    ],
   },
 
   serviceArea: ["Franklin County", "Columbus, Ohio"],
@@ -112,7 +141,12 @@ export function mapsUrl(): string {
   )}`;
 }
 
-/** "9:00 AM - 5:00 PM". Days are appended separately, only when confirmed. */
-export function hoursRange(): string {
-  return `${site.hours.open} – ${site.hours.close}`;
+/** "Monday – Friday, 9:00 AM – 3:00 PM" */
+export function officeHours(): string {
+  return `${site.hours.office.days}, ${site.hours.office.display}`;
+}
+
+/** "Mon – Fri, 9:00 AM – 3:00 PM" - the compact form for the header bar. */
+export function officeHoursShort(): string {
+  return `${site.hours.office.days.replace(/(\w{3})\w*/g, "$1")}, ${site.hours.office.display}`;
 }

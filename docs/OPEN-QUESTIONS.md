@@ -8,11 +8,6 @@ where an answer is missing, the site says so and points at the phone.
 
 ## Blocking launch
 
-- [ ] **Days of the week for business hours.** We have 9 AM – 5 PM and nothing else.
-      Also: are those *office* hours or *lesson* hours? An 8-hour drive cannot fit in a
-      single 9–5 day, and adult learners typically need evenings and weekends. Until this
-      is answered the site shows the time range plus "Call to confirm", and structured
-      data omits `openingHours` entirely.
 - [ ] **Ohio driver training school licence number.** Needed for the trust section, and
       it is the strongest credibility signal the site can carry.
 - [ ] **Is the school listed in the state's approved-school lookup?**
@@ -71,17 +66,14 @@ where an answer is missing, the site says so and points at the phone.
 
 ## Contradictions and risks found in the brief
 
-1. **Hours don't fit the service.** 9 AM – 5 PM, no days given, against an 8-hour driving
-   course and an audience of working adults.
-
-2. **The audience and the FAQ point in opposite directions.** The brief says the business
+1. **The audience and the FAQ point in opposite directions.** The brief says the business
    skews adult (21+), but every piece of supplied FAQ material covers only the 18–20
    Class D path. The $800 adult course — the most expensive product — has no supporting
    content at all. The requirements page handles this honestly: it states that the steps
    apply to ages 18–20 and routes 21+ visitors to a phone call. That is a stopgap, not a
    solution.
 
-3. **The BMV 5791 link the client supplied was dead.** `publicsafety.ohio.gov/links/
+2. **The BMV 5791 link the client supplied was dead.** `publicsafety.ohio.gov/links/
    bmv5791.pdf` returned 404, verified along with four other URL patterns. The BMV's own
    forms page still advertises it, so this is the state's broken link rather than a
    transcription error. The site now uses
@@ -89,7 +81,7 @@ where an answer is missing, the site says so and points at the phone.
    current version including the hour log). The original URL is preserved in a comment in
    `src/content/bmv.ts`. `npm run links:check` guards against a repeat.
 
-4. **Possible omission on the affidavit.** Public BMV guidance describes form BMV 5791 as
+3. **Possible omission on the affidavit.** Public BMV guidance describes form BMV 5791 as
    **notarised** for applicants under 21. The client's summary says only "completed". His
    wording has not been altered — but a student who arrives un-notarised fails the
    appointment, so this needs confirming.
@@ -100,6 +92,13 @@ business name was right. Both are now confirmed — see Resolved.)
 ---
 
 ## Resolved
+
+- **Hours confirmed (30 August 2026), and they resolve an earlier contradiction.** The
+  original brief said 9 AM–5 PM, which could not accommodate an 8-hour driving course.
+  The real answer is that office and in-car hours are different: office Monday–Friday
+  9:00 AM–3:00 PM, lessons Monday–Thursday and at weekends including 6:00–8:00 PM
+  evenings, plus a single Friday afternoon slot. Both are on the site; only the office
+  hours go into structured data.
 
 - **Pricing confirmed by the client (30 August 2026).** $600 / $550 / $800 are correct as
   given. The $50 gap between the 24-hour-plus-drive package and the drive-only course is
