@@ -10,7 +10,6 @@ import { ArrowRightIcon, CheckIcon } from "@/components/ui/icons";
 import { BMV_STEP_IDS } from "@/content/bmv";
 import { copy } from "@/content/copy";
 import { courses } from "@/content/courses";
-import { hasMedia } from "@/content/media";
 import { site } from "@/content/site";
 import { renderBmv } from "@/lib/copy-render";
 import { REGISTER_HREF } from "@/lib/nav";
@@ -25,21 +24,14 @@ export const metadata: Metadata = buildMetadata({
 export default function HomePage() {
   const { hero, coursesSection, trust, requirementsTeaser, serviceArea, finalCta } =
     copy.home;
-  // Drop the two-column split until there is a photo to put in the second
-  // column. Setting media.heroPrimary.src restores it with no other change.
-  const showHeroImage = hasMedia("heroPrimary");
 
   return (
     <>
       {/* Hero */}
       <section className="border-b border-line bg-surface-raised">
         <Container width="wide">
-          <div
-            className={`grid items-center gap-10 py-14 sm:py-18 lg:gap-16 lg:py-24 ${
-              showHeroImage ? "lg:grid-cols-[1.05fr_0.95fr]" : ""
-            }`}
-          >
-            <div className={showHeroImage ? "" : "max-w-3xl"}>
+          <div className="grid items-center gap-10 py-14 sm:py-18 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:py-24">
+            <div>
               <p className="mb-4 text-xs font-semibold tracking-[0.14em] text-brand-600 uppercase">
                 {hero.eyebrow}
               </p>
@@ -63,13 +55,11 @@ export default function HomePage() {
               </p>
             </div>
 
-            {showHeroImage ? (
-              <Figure
-                slot="heroPrimary"
-                alt={copy.media.heroPrimary}
-                sizes="(min-width: 1024px) 46vw, 100vw"
-              />
-            ) : null}
+            <Figure
+              slot="heroPrimary"
+              alt={copy.media.heroPrimary}
+              sizes="(min-width: 1024px) 46vw, 100vw"
+            />
           </div>
         </Container>
       </section>

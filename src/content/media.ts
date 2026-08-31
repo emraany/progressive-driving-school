@@ -41,8 +41,3 @@ export const media: Record<MediaSlot, MediaEntry> = {
   requirementsBanner: { src: null, aspect: "16 / 9", width: 1920, height: 1080 },
   contactExterior: { src: null, aspect: "3 / 2", width: 1800, height: 1200 },
 };
-
-/** True once a real photograph has been dropped into this slot. */
-export function hasMedia(slot: MediaSlot): boolean {
-  return media[slot].src !== null;
-}
