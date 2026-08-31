@@ -1,12 +1,10 @@
 import Link from "next/link";
-import type { Copy } from "@/content/copy/types";
-import { hoursRange, localesToBuild, site } from "@/content/site";
-import type { Locale } from "@/lib/i18n";
-import { navItems, registerHref } from "@/lib/nav";
+import { copy } from "@/content/copy";
+import { hoursRange, site } from "@/content/site";
+import { navItems, REGISTER_HREF } from "@/lib/nav";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { PhoneIcon } from "@/components/ui/icons";
-import { LangSwitcher } from "./LangSwitcher";
 import { MobileMenu } from "./MobileMenu";
 import { Wordmark } from "./Wordmark";
 
@@ -15,13 +13,12 @@ import { Wordmark } from "./Wordmark";
  * it is on screen without scrolling on every page at every viewport width -
  * the site's single most important conversion path.
  */
-export function Header({ locale, copy }: { locale: Locale; copy: Copy }) {
-  const items = navItems(locale, copy);
-  const locales = localesToBuild();
+export function Header() {
+  const items = navItems();
 
   return (
     <header className="sticky top-0 z-50">
-      <div className="bg-brand-800 text-brand-100">
+      <div className="bg-brand-900 text-brand-100">
         <Container width="wide">
           <div className="flex h-10 items-center justify-between gap-3">
             <a
@@ -32,24 +29,23 @@ export function Header({ locale, copy }: { locale: Locale; copy: Copy }) {
               <PhoneIcon className="h-4 w-4" />
               {site.phone.display}
             </a>
-            <div className="flex items-center gap-4">
-              <span className="hidden text-sm text-brand-200 sm:inline">
-                {hoursRange()}
+            <div className="flex items-center gap-4 text-sm">
+              {/* Hidden only on the very narrowest phones (320px), where it would push
+                  the top bar wider than the viewport. The trust section and footer
+                  still carry it there. */}
+              <span className="hidden text-brand-200 min-[360px]:inline">
+                {copy.common.languagesNote}
               </span>
-              <LangSwitcher
-                current={locale}
-                label={copy.a11y.languageSwitcher}
-                locales={locales}
-              />
+              <span className="hidden text-brand-200 md:inline">{hoursRange()}</span>
             </div>
           </div>
         </Container>
       </div>
 
-      <div className="relative border-b border-line bg-surface-raised/95 backdrop-blur supports-[backdrop-filter]:bg-surface-raised/85">
+      <div className="relative border-b border-line bg-surface-raised">
         <Container width="wide">
           <div className="flex h-16 items-center justify-between gap-4">
-            <Wordmark locale={locale} />
+            <Wordmark />
 
             <nav
               aria-label={copy.a11y.primaryNav}
@@ -68,7 +64,7 @@ export function Header({ locale, copy }: { locale: Locale; copy: Copy }) {
 
             <div className="flex items-center gap-2">
               <ButtonLink
-                href={registerHref(locale)}
+                href={REGISTER_HREF}
                 variant="primary"
                 size="sm"
                 aria-label={copy.a11y.registerAria}

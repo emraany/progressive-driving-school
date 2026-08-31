@@ -1,12 +1,9 @@
 /**
  * ============================================================================
- * BUSINESS FACTS — edit this file to change contact details, hours, or the
- * registration link. Nothing here is translated: these values are shown
- * identically in English and Somali, so one edit updates both.
+ * BUSINESS FACTS — edit this file to change contact details, hours, the
+ * registration link, or the logo.
  * ============================================================================
  */
-
-import { LOCALES, type Locale } from "@/lib/i18n";
 
 export interface SiteConfig {
   /** Short name — header, headings, page titles. */
@@ -30,23 +27,27 @@ export interface SiteConfig {
     days: string | null;
   };
   serviceArea: string[];
-  /** null = not yet supplied. Every "Register" button routes through
-   *  /{lang}/register, which falls back to the contact page while this is null.
-   *  Filling this in is the only change needed to make registration live. */
+  /** Languages the school can serve students in. */
+  languages: string[];
+  /** Where the Register button sends people. Every Register control on the
+   *  site routes through /register, which reads this one value. */
   registerUrl: string | null;
-  /** Locales visible to the public. Add "so" once src/content/copy/so.ts is
-   *  translated — that single edit publishes the Somali site. */
-  publishedLocales: Locale[];
   /** Canonical origin, no trailing slash. Update when a real domain exists. */
   url: string;
   social: { google: string | null; facebook: string | null };
-  /** Logo file under /public. null = falls back to a typeset wordmark. */
-  logo: { src: string | null; width: number; height: number };
+  /** Logo mark shown in the header, and the full lockup for sharing cards. */
+  logo: {
+    mark: string;
+    markWidth: number;
+    markHeight: number;
+    full: string;
+    fullWidth: number;
+    fullHeight: number;
+  };
 }
 
 export const site: SiteConfig = {
-  // TODO(client): confirm exact legal name — this was inferred from the
-  // business email address, never stated directly.
+  // Confirmed by the logo artwork: "PROGRESSIVE DRIVING SCHOOL LLC, COLUMBUS, OH".
   name: "Progressive Driving School",
   legalName: "Progressive Driving School LLC",
 
@@ -77,10 +78,9 @@ export const site: SiteConfig = {
 
   serviceArea: ["Franklin County", "Columbus, Ohio"],
 
-  // TODO(client): registration destination URL.
-  registerUrl: null,
+  languages: ["English", "Somali"],
 
-  publishedLocales: ["en", "so"],
+  registerUrl: "https://form.jotform.com/262005642367050",
 
   // TODO: replace with the real domain once one is purchased.
   url: "https://progressive-driving-school.vercel.app",
@@ -90,10 +90,14 @@ export const site: SiteConfig = {
     facebook: null,
   },
 
-  // TODO(client): logo pending. Drop an SVG into public/logo/ and set `src`
-  // (e.g. "/logo/logo.svg") with its intrinsic dimensions. The header swaps
-  // from the typeset wordmark to the real mark with no other change.
-  logo: { src: null, width: 200, height: 48 },
+  logo: {
+    mark: "/logo/logo-mark.png",
+    markWidth: 357,
+    markHeight: 240,
+    full: "/logo/logo-full.png",
+    fullWidth: 727,
+    fullHeight: 600,
+  },
 };
 
 /** "2600 Oakstone Dr, Suite 28, Columbus, OH 43231" */
@@ -110,23 +114,5 @@ export function mapsUrl(): string {
 
 /** "9:00 AM - 5:00 PM". Days are appended separately, only when confirmed. */
 export function hoursRange(): string {
-  return `${site.hours.open} \u2013 ${site.hours.close}`;
-}
-
-export function isLocalePublished(locale: Locale): boolean {
-  return site.publishedLocales.includes(locale);
-}
-
-/**
- * Which locales get built as pages.
- *
- * Production builds only what is published, so an untranslated Somali site can
- * never be reached or indexed. Development always builds every locale so the
- * Somali layout can be previewed while it is being translated, and
- * PREVIEW_ALL_LOCALES=1 does the same on a Vercel preview deployment.
- */
-export function localesToBuild(): Locale[] {
-  if (process.env.NODE_ENV === "development") return [...LOCALES];
-  if (process.env.PREVIEW_ALL_LOCALES === "1") return [...LOCALES];
-  return site.publishedLocales;
+  return `${site.hours.open} – ${site.hours.close}`;
 }

@@ -1,12 +1,8 @@
-import type { Locale } from "@/lib/i18n";
 import { en } from "./en";
-import { so } from "./so";
 import type { Copy } from "./types";
 
-const dictionaries: Record<Locale, Copy> = { en, so };
-
-export function getCopy(locale: Locale): Copy {
-  return dictionaries[locale];
-}
+/** The site is English-only. Somali is offered in person and by phone, which
+ *  the copy says explicitly — see `trust.points` and the `somaliSupport` FAQ. */
+export const copy: Copy = en;
 
 export type { Copy };

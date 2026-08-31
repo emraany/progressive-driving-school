@@ -1,9 +1,8 @@
 import Link from "next/link";
-import type { Copy } from "@/content/copy/types";
 import { bmv, bmvPlaceholders, type BmvLinkKey } from "@/content/bmv";
+import { copy } from "@/content/copy";
 import { formatAddress, hoursRange, mapsUrl, site } from "@/content/site";
 import { interpolate } from "@/lib/format";
-import type { Locale } from "@/lib/i18n";
 import { navItems } from "@/lib/nav";
 import { Container } from "@/components/ui/Container";
 import { ExternalLink } from "@/components/ui/ExternalLink";
@@ -16,8 +15,8 @@ function ColumnHeading({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function Footer({ locale, copy }: { locale: Locale; copy: Copy }) {
-  const items = navItems(locale, copy);
+export function Footer() {
+  const items = navItems();
   const linkKeys = Object.keys(bmv.links) as BmvLinkKey[];
 
   return (
@@ -30,6 +29,9 @@ export function Footer({ locale, copy }: { locale: Locale; copy: Copy }) {
             </p>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-brand-200">
               {copy.footer.tagline}
+            </p>
+            <p className="mt-3 text-sm font-medium text-white">
+              {copy.common.languagesNote}
             </p>
             <a
               href={site.phone.href}

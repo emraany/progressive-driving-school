@@ -8,10 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "i18n:check": "node scripts/i18n-check.mjs",
-    "i18n:scaffold": "node scripts/scaffold-so.mjs",
     "links:check": "node scripts/links-check.mjs",
-    "check": "npm run typecheck && npm run lint && npm run i18n:check"
+    "check": "npm run typecheck && npm run lint"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

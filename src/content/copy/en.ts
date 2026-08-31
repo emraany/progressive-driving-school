@@ -22,7 +22,6 @@ export const en = {
     closeMenu: "Close menu",
     callAria: "Call Progressive Driving School",
     registerAria: "Register for a course",
-    languageSwitcher: "Choose a language",
     opensInNewTab: "opens in a new tab",
   },
 
@@ -44,6 +43,7 @@ export const en = {
 
   common: {
     callToConfirm: "Call to confirm",
+    languagesNote: "English and Somali spoken",
     priceLabel: "Price",
     ageLabel: "Minimum age",
     classroomHoursLabel: "Classroom",
@@ -90,9 +90,9 @@ export const en = {
             "The classroom portion is fully online. Work through it at home, in the evening, or on a day off - whenever it suits you.",
         },
         {
-          title: "Start when you're ready",
+          title: "English and Somali",
           body:
-            "Enrollment is rolling. You're not waiting weeks for the next class to open up.",
+            "Waxaan ku hadalnaa Af-Soomaali. Ask for Somali when you call and we'll take care of you in your own language.",
         },
         {
           title: "Built for adults, too",
@@ -291,11 +291,8 @@ export const en = {
         a: "Yes. Our 12-hour adult course is built for drivers 21 and older. Call us and we'll go over what Ohio asks of you and how many hours make sense.",
       },
       somaliSupport: {
-        // TODO(client): confirm that instruction and phone support really are
-        // available in Somali before this answer is made more specific. A
-        // bilingual site implies Somali-speaking service - don't over-promise.
         q: "Do you offer help in Somali?",
-        a: "Call us and let us know which language you'd prefer, and we'll do our best to help.",
+        a: "Yes - waxaan ku hadalnaa Af-Soomaali. Just ask for Somali when you call, and we'll go through the course, the paperwork and the Ohio requirements in Somali.",
       },
       whatToBring: {
         // TODO(client): "what to bring" was never fully answered. In

@@ -1,16 +1,14 @@
-import type { Copy } from "@/content/copy/types";
+import { copy } from "@/content/copy";
 import { site } from "@/content/site";
 import { buttonClasses, type ButtonSize, type ButtonVariant } from "@/components/ui/Button";
 import { PhoneIcon } from "@/components/ui/icons";
 
 export function CallButton({
-  copy,
   variant = "secondary",
   size = "md",
   showNumber = false,
   className = "",
 }: {
-  copy: Copy;
   variant?: ButtonVariant;
   size?: ButtonSize;
   /** Show the number itself rather than "Call now". */

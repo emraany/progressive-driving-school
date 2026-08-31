@@ -2,11 +2,11 @@ import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 
 const variants = {
-  /** The conversion action - Register. Warm accent, used sparingly. */
+  /** The conversion action - Register. The logo's accent blue. */
   primary:
-    "bg-accent-600 text-white hover:bg-accent-700 active:bg-accent-700 shadow-sm",
-  /** Supporting action - Call, Contact. */
-  secondary: "bg-brand-700 text-white hover:bg-brand-800 active:bg-brand-800",
+    "bg-brand-600 text-white hover:bg-brand-700 active:bg-brand-700 shadow-sm",
+  /** Supporting action - Call, Contact. The logo's deep navy. */
+  secondary: "bg-brand-900 text-white hover:bg-brand-800 active:bg-brand-800",
   /** Quiet action on a light background. */
   outline:
     "border border-line-strong bg-surface-raised text-ink-900 hover:bg-surface-sunken",

@@ -57,7 +57,6 @@ export interface Copy {
     closeMenu: string;
     callAria: string;
     registerAria: string;
-    languageSwitcher: string;
     opensInNewTab: string;
   };
 
@@ -81,6 +80,8 @@ export interface Copy {
   common: {
     /** Shown wherever the business has not confirmed a detail. */
     callToConfirm: string;
+    /** Short "we speak these languages" line, used in the header and footer. */
+    languagesNote: string;
     priceLabel: string;
     ageLabel: string;
     classroomHoursLabel: string;

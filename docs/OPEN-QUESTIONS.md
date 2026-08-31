@@ -1,6 +1,6 @@
 # Open questions and flagged gaps
 
-Status as of 30 August 2026. Everything here is either unanswered, unconfirmed, or
+Status as of 30 August 2026 (updated after the logo and registration link arrived). Everything here is either unanswered, unconfirmed, or
 internally inconsistent in the brief. Nothing below has been guessed at in the code —
 where an answer is missing, the site says so and points at the phone.
 
@@ -8,13 +8,6 @@ where an answer is missing, the site says so and points at the phone.
 
 ## Blocking launch
 
-- [ ] **Confirm the legal name.** "Progressive Driving School LLC" was inferred from the
-      business email address; the client never stated it. The site shows "Progressive
-      Driving School" in the header and headings, with the full LLC name in the footer,
-      copyright and structured data. Both come from `site.name` / `site.legalName`.
-- [ ] **Registration URL.** `site.registerUrl` is `null`, so every Register button
-      currently falls back to the contact page. One destination for all three courses, or
-      one per course? Is the 24-hour online course hosted by a third-party vendor?
 - [ ] **Days of the week for business hours.** We have 9 AM – 5 PM and nothing else.
       Also: are those *office* hours or *lesson* hours? An 8-hour drive cannot fit in a
       single 9–5 day, and adult learners typically need evenings and weekends. Until this
@@ -31,8 +24,10 @@ where an answer is missing, the site says so and points at the phone.
       The requirements page sends visitors to
       <https://apps.dps.ohio.gov/DETS/public/schools>. If Progressive is not listed there,
       that link actively costs conversions.
-- [ ] **Logo files.** SVG preferred, horizontal and stacked lockups, plus any existing
-      brand colours or fonts. The palette is a neutral placeholder until then.
+- [ ] **A vector version of the logo.** What was supplied is a PNG screenshot, which was
+      trimmed and cleaned into `logo-mark.png` and `logo-full.png`. Those are fine at the
+      sizes the site uses, but an SVG or the original artwork would be sharper and much
+      smaller, and is what a print shop will ask for.
 - [ ] **Per-course minimum ages.** Unanswered for the $600 and $550 courses. The site
       shows "Call to confirm" rather than inventing a number. (21+ for the adult course
       comes from the client's own course name.)
@@ -59,8 +54,6 @@ where an answer is missing, the site says so and points at the phone.
       contradiction below.
 - [ ] **Is Suite 28 somewhere students go**, or admin only given the classroom is online?
       This decides whether the site should push directions and a map.
-- [ ] **Is Somali-speaking instruction and phone support genuinely available?** See the
-      contradiction below.
 
 ---
 
@@ -109,17 +102,28 @@ where an answer is missing, the site says so and points at the phone.
    wording has not been altered — but a student who arrives un-notarised fails the
    appointment, so this needs confirming.
 
-6. **A bilingual site implies Somali-speaking service.** Building a first-class Somali
-   version tells visitors they can be served in Somali. Confirm that instruction and
-   phone support genuinely are available in Somali, or the site over-promises. The FAQ
-   answer on this is deliberately vague pending confirmation.
-
-7. **Business name never stated** — taken from an email address.
+(Formerly listed here: whether Somali-speaking service was genuine, and whether the
+business name was right. Both are now confirmed — see Resolved.)
 
 ---
+
+## Resolved
+
+- **Legal name** — the logo artwork reads "PROGRESSIVE DRIVING SCHOOL LLC · COLUMBUS, OH",
+  confirming both the name and the city. The site shows the short name in headings and the
+  full legal name in the footer, copyright and structured data.
+- **Registration URL** — `https://form.jotform.com/262005642367050`, set in
+  `site.registerUrl`. Every Register control routes through `/register` to reach it.
+- **Logo** — supplied and in use. The palette is now sampled from it rather than a
+  placeholder: `#1a4390` accent blue, `#071c49` navy, `#3b3e42` charcoal.
+- **Somali** — the client confirmed the school serves Somali-speaking students. The site
+  says so in the header, the trust section, the contact page and the FAQ, and declares it
+  to search engines via `knowsLanguage`. A separate Somali version of the site was built
+  and then removed at the client's direction; the full translation remains in git history
+  (commit `ee75529`) if it is ever wanted again.
 
 ## Deliberately out of scope
 
 No payment plans, no discounts, no promo or coupon UI anywhere in the codebase. No stock
-photography. No machine translation. No CMS. Nothing copied from the inspiration site
-beyond page-level information architecture.
+photography. No CMS. No separate Somali version of the site. Nothing copied from the
+inspiration site beyond page-level information architecture.

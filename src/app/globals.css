@@ -6,50 +6,50 @@
    THIS IS THE ONLY FILE IN THE PROJECT THAT DEFINES A COLOR.
    No component contains a raw hex value.
 
-   When the logo arrives, derive the palette from it and replace the values in
-   the `--color-brand-*` and `--color-accent-*` scales below. The whole site
-   re-skins - nothing else needs to change.
+   Every colour is derived from the logo. Replace the `--color-brand-*` scale
+   to re-skin the whole site - nothing else needs to change.
 
-   Until then these are deliberately neutral placeholders: a restrained navy
-   and a warm amber. They are not a design decision, they are a stand-in.
+   The palette below is sampled from the logo: its navy, its accent blue, and
+   its charcoal. Change the logo and these values should be resampled.
 
    Check contrast against WCAG AA once the real palette is in: body text needs
    4.5:1 against its background, large headings and UI controls 3:1.
    ========================================================================== */
 
 @theme {
-  /* --- Brand: replace from logo -------------------------------------- */
-  --color-brand-50: #f0f4f8;
-  --color-brand-100: #dbe4ee;
-  --color-brand-200: #b9cadd;
-  --color-brand-300: #8ea9c6;
-  --color-brand-400: #5f83a8;
-  --color-brand-500: #3f6489;
-  --color-brand-600: #2f4e6e;
-  --color-brand-700: #274058;
-  --color-brand-800: #223446;
-  --color-brand-900: #1a2733;
+  /* --- Brand: sampled from the logo artwork ---------------------------
+     brand-600 #1a4390 is the arc/accent blue, brand-900 #071c49 is the "P"
+     and wordmark navy. The rest of the scale is interpolated from those two. */
+  --color-brand-50: #eef3fb;
+  --color-brand-100: #dae4f5;
+  --color-brand-200: #b6c9ea;
+  --color-brand-300: #88a6da;
+  --color-brand-400: #547fc5;
+  --color-brand-500: #2d5cae;
+  --color-brand-600: #1a4390;
+  --color-brand-700: #143570;
+  --color-brand-800: #0d2758;
+  --color-brand-900: #071c49;
 
-  /* --- Accent: replace from logo. Used sparingly, for CTAs. ---------- */
-  --color-accent-50: #fdf7ec;
-  --color-accent-100: #f8ead0;
-  --color-accent-500: #b8842b;
-  --color-accent-600: #9a6d20;
-  --color-accent-700: #7b5718;
+  /* --- Danger: form validation only. Not a brand colour. -------------- */
+  --color-danger-50: #fdf3f2;
+  --color-danger-500: #c0392b;
+  --color-danger-600: #a5301f;
+  --color-danger-700: #85281a;
 
-  /* --- Neutrals: warm greys, tuned to sit under the brand ------------ */
-  --color-ink-900: #141a21;
-  --color-ink-800: #1f2830;
-  --color-ink-700: #2f3a45;
-  --color-ink-500: #5c6773;
-  --color-ink-400: #8a949f;
-  --color-ink-300: #b6bdc5;
+  /* --- Neutrals: ink-700 #3b3e42 is the logo's road/charcoal ---------- */
+  --color-ink-900: #1b1e22;
+  --color-ink-800: #2a2e33;
+  --color-ink-700: #3b3e42;
+  --color-ink-500: #62666d;
+  --color-ink-400: #8e9299;
+  --color-ink-300: #b9bdc3;
 
-  --color-surface: #fbfaf8;
+  --color-surface: #f8f9fb;
   --color-surface-raised: #ffffff;
-  --color-surface-sunken: #f3f0eb;
-  --color-line: #e4dfd7;
-  --color-line-strong: #cec7bb;
+  --color-surface-sunken: #eef1f6;
+  --color-line: #dfe4ec;
+  --color-line-strong: #c4ccd8;
 
   /* --- Type: a classic serif for display, a modern sans for text ----- */
   --font-display: var(--font-source-serif), Georgia, "Times New Roman", serif;

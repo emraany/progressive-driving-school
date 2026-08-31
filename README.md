@@ -3,13 +3,13 @@
 Marketing site for Progressive Driving School LLC, Columbus, Ohio.
 Next.js (App Router) + TypeScript + Tailwind v4, statically generated, hosted on Vercel.
 
-English and Somali are both live — see
-[docs/TRANSLATION.md](docs/TRANSLATION.md).
+The site is in English. Somali-speaking service is offered in person and by phone, which
+the copy states explicitly — there is no separate Somali version of the site.
 
 ```bash
 npm install
-npm run dev          # http://localhost:3000 (both languages visible in dev)
-npm run check        # typecheck + lint + i18n
+npm run dev          # http://localhost:3000
+npm run check        # typecheck + lint
 npm run links:check  # verifies the Ohio BMV links still resolve
 ```
 
@@ -17,13 +17,12 @@ npm run links:check  # verifies the Ohio BMV links still resolve
 
 ## Making edits
 
-The design principle behind this codebase: **facts live in one place, prose lives in
-another.** Prices, phone numbers, hour counts and URLs are stored once and read by both
-languages, so a price change updates English and Somali at the same time and the two can
-never drift apart.
+Content is separated from code. Prices, contact details, hour counts and official links
+live once in `src/content/`, and the prose that surrounds them lives in one copy file.
+A price change is one line and cannot get out of sync with anything else.
 
-Everything below is a one-line edit in `src/content/`. No build knowledge required —
-these files can be edited straight from the GitHub web UI, which redeploys automatically.
+Everything below can be edited straight from the GitHub web UI, which redeploys
+automatically. No build knowledge required.
 
 | To change… | Edit | Notes |
 |---|---|---|
@@ -32,43 +31,51 @@ these files can be edited straight from the GitHub web UI, which redeploys autom
 | Business hours | `src/content/site.ts` → `hours` | Set `days` once confirmed (see below). |
 | The registration link | `src/content/site.ts` → `registerUrl` | See "Register button" below. |
 | Ohio BMV rules or links | `src/content/bmv.ts` | Then bump `lastVerified`. |
-| Any visible English text | `src/content/copy/en.ts` | Also update `so.ts`. |
+| Any visible text | `src/content/copy/en.ts` | One file, in page order. |
 | Add a photo | `src/content/media.ts` | See "Photography" below. |
 | The logo | `src/content/site.ts` → `logo` | See "Logo" below. |
 | Brand colours | `src/app/globals.css` | The only file with colours in it. |
 
 ### The Register button
 
-Every "Register" control links to `/{lang}/register`, never to an external URL. That
-route reads `site.registerUrl` and redirects.
+Every "Register" control links to `/register`, never to the external form directly. That
+route reads `site.registerUrl` and redirects — currently to the JotForm at
+`form.jotform.com/262005642367050`. Changing where enrolment happens is one line.
 
-- **While `registerUrl` is `null`** (now): it redirects to the contact page, so the
-  primary call to action still goes somewhere useful instead of nowhere.
-- **To go live**: set `registerUrl` to the real URL. One line, and every Register button
-  on the site switches over.
+If `registerUrl` is ever set back to `null`, the route falls back to the contact page so
+the primary call to action never dead-ends.
+
+There is deliberately **no Register button on the individual course cards**. One sits in
+the sticky header on every page, one in the hero, and one on the courses page beside the
+enrolment explanation. Repeating it per card produced six identical buttons that all led
+to the same form, which asks which course you want anyway.
 
 ### Logo
 
-Drop an SVG into `public/logo/` and set `site.logo.src` (e.g. `"/logo/logo.svg"`) with
-its intrinsic width and height. The header swaps from the typeset wordmark to the real
-mark with no other change.
+`public/logo/` holds two assets, both generated from the artwork the client supplied:
 
-Then derive the palette from the logo and replace the `--color-brand-*` and
-`--color-accent-*` values in `src/app/globals.css`. That file is the only place a colour
-is defined — no component contains a hex value — so the whole site re-skins from those
-two scales. Check the new colours for WCAG AA contrast (4.5:1 body text, 3:1 for large
-headings and controls).
+- `logo-mark.png` — the emblem alone, used in the header
+- `logo-full.png` — the complete lockup, used for link-preview cards
+
+The header pairs the emblem with the name in live text. The full lockup's own type would
+be about four pixels tall in a 64px header, so setting the name in HTML keeps it legible,
+selectable and translatable.
+
+The palette in `src/app/globals.css` is **sampled from the logo**: `brand-600 #1a4390` is
+its accent blue, `brand-900 #071c49` its navy, `ink-700 #3b3e42` its charcoal. If the logo
+ever changes, resample those and the whole site re-skins — no component contains a hex
+value.
 
 ### Photography
 
-Image slots are declared in `src/content/media.ts` with their final aspect ratios
-already reserved, so the layout is identical before and after photos arrive — no reflow,
-no layout shift, nothing to restructure.
+Image slots are declared in `src/content/media.ts` with their final aspect ratios already
+reserved, so the layout is identical before and after photos arrive — no reflow, no
+layout shift, nothing to restructure.
 
 1. Export stills at **2000px wide or larger**.
 2. Save into `public/images/`.
 3. Set `src` for that slot in `media.ts`.
-4. Update the alt text under `media` in **both** copy files.
+4. Update the alt text under `media` in `src/content/copy/en.ts`.
 
 `next/image` handles compression and AVIF/WebP. Two things to check before publishing
 anyone's photo: consent from anyone identifiable, and no readable licence plates.
@@ -87,28 +94,22 @@ worse than publishing none. Set `days` and both fix themselves.
 ```
 src/
   app/
-    [lang]/            Every page. This is the root layout, so <html lang> is always right.
-      page.tsx         Home
-      courses/         Courses and pricing
-      requirements/    Ohio requirements (ages 18-20) + FAQ
-      contact/         Contact details + form
-      register/        Redirect chokepoint -> site.registerUrl
+    page.tsx           Home
+    courses/           Courses and pricing
+    requirements/      Ohio requirements (ages 18-20) + FAQ
+    contact/           Contact details + form
+    register/          Redirect chokepoint -> site.registerUrl
     api/contact/       Resend delivery path (inactive; see below)
     globals.css        Design tokens. The only file that defines a colour.
   components/
-    site/              Header, Footer, LangSwitcher, MobileMenu, CourseCard, CallButton
+    site/              Header, Footer, Wordmark, MobileMenu, CourseCard, CallButton
     ui/                Button, Card, Container, Section, ExternalLink, icons
     media/Figure       Image slot with reserved aspect ratio
     forms/ContactForm  Client-side form
   content/             ← all editable content (see the table above)
-  lib/                 i18n, SEO, structured data, form transport
-scripts/               i18n and link checks
+  lib/                 nav, SEO, structured data, form transport
+scripts/links-check.mjs
 ```
-
-`/` redirects to `/en` (configured in `next.config.ts`). Both locales are published, so
-`/en` and `/so` are each statically generated. A locale removed from `publishedLocales`
-stops being built and returns 404, which is how an unfinished translation is kept out of
-production.
 
 ---
 
@@ -119,8 +120,10 @@ Submissions go to `progressivedrivingschoolllc@gmail.com`.
 Because the business has no domain yet, the form posts to **Web3Forms**, a hosted
 endpoint that delivers straight to Gmail with no DNS setup. Set it up once:
 
-1. Sign up at <https://web3forms.com> using the business Gmail address.
-2. Put the access key in `.env.local` and in the Vercel project's environment variables:
+1. Sign up at <https://web3forms.com> **using the business Gmail address** — Web3Forms
+   routes mail by access key, not by anything in this code, so whoever signs up receives
+   the submissions.
+2. Put the key in `.env.local` and in the Vercel project's environment variables:
    ```
    NEXT_PUBLIC_WEB3FORMS_KEY=your-key
    ```
@@ -134,11 +137,10 @@ business has a domain and wants a branded sender. Verify the domain in Resend, t
 code changes. See `src/lib/contact-transport.ts` and `.env.example`.
 
 Spam is handled by a honeypot field and a submission-time trap. No CAPTCHA — that is
-friction on the site's single most important conversion. Add one only if spam actually
-appears.
+friction on the site's most important conversion. Add one only if spam actually appears.
 
-If the form ever fails, the error state shows the phone number. A form outage must never
-cost a lead.
+If the form ever fails, the error state shows the phone number and keeps what the visitor
+typed. A form outage must never cost a lead.
 
 ---
 
@@ -146,17 +148,15 @@ cost a lead.
 
 | Command | What it does |
 |---|---|
-| `npm run dev` | Dev server. Both locales are built so Somali can be previewed. |
-| `npm run build` | Production build. Only published locales. |
-| `npm run check` | `typecheck` + `lint` + `i18n:check`. Run before pushing. |
+| `npm run dev` | Dev server. |
+| `npm run build` | Production build. |
+| `npm run check` | `typecheck` + `lint`. Run before pushing. |
 | `npm run links:check` | Requests every Ohio BMV URL and fails on anything but 200. |
-| `npm run i18n:check` | Somali progress, structure drift, placeholder drift. |
-| `npm run i18n:scaffold` | Regenerates `so.ts` from `en.ts`. `--force` to overwrite. |
 
 **Run `links:check` before every deploy, and every few months.** The site links to four
-Ohio government URLs the business does not control. One of them was already dead when
-the client supplied it — `publicsafety.ohio.gov/links/bmv5791.pdf` returns 404, and the
-BMV's own forms page still advertises it. They will rot again.
+Ohio government URLs the business does not control. One of them was already dead when the
+client supplied it — `publicsafety.ohio.gov/links/bmv5791.pdf` returns 404, and the BMV's
+own forms page still advertises it. They will rot again.
 
 ---
 
@@ -166,11 +166,11 @@ Push to GitHub, import the repo in Vercel, and set the environment variables fro
 `.env.example`. Nothing else to configure — no database, no CMS, no build settings.
 
 Before the first production deploy, set `site.url` to the real domain. It is used for
-canonical URLs, hreflang tags, the sitemap and structured data.
+canonical URLs, the sitemap and structured data.
 
 ---
 
 ## Outstanding
 
-See [docs/OPEN-QUESTIONS.md](docs/OPEN-QUESTIONS.md) — what still needs answering before
-launch, and where the client's brief was incomplete or self-contradictory.
+See [docs/OPEN-QUESTIONS.md](docs/OPEN-QUESTIONS.md) — what still needs answering, and
+where the client's brief was incomplete or self-contradictory.

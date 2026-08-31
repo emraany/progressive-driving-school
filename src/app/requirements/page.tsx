@@ -12,29 +12,19 @@ import {
   bmvStepLinks,
   type BmvLinkKey,
 } from "@/content/bmv";
-import { getCopy } from "@/content/copy";
+import { copy } from "@/content/copy";
 import { renderBmv } from "@/lib/copy-render";
 import { formatVerifiedDate, interpolate } from "@/lib/format";
-import type { Locale } from "@/lib/i18n";
 import { buildMetadata } from "@/lib/seo";
 import { faqSchema, JsonLd } from "@/lib/structured-data";
 
-type Params = { params: Promise<{ lang: Locale }> };
+export const metadata: Metadata = buildMetadata({
+  path: "/requirements",
+  title: copy.requirementsPage.title,
+  description: copy.requirementsPage.description,
+});
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const { lang } = await params;
-  const copy = getCopy(lang);
-  return buildMetadata({
-    locale: lang,
-    path: "requirements",
-    title: copy.requirementsPage.title,
-    description: copy.requirementsPage.description,
-  });
-}
-
-export default async function RequirementsPage({ params }: Params) {
-  const { lang } = await params;
-  const copy = getCopy(lang);
+export default function RequirementsPage() {
   const page = copy.requirementsPage;
   const linkKeys = Object.keys(bmv.links) as BmvLinkKey[];
 
@@ -118,7 +108,7 @@ export default async function RequirementsPage({ params }: Params) {
         <Card className="mt-14 bg-surface-sunken p-6 sm:p-7">
           <p className="text-base leading-relaxed text-ink-700">{page.adultNote}</p>
           <div className="mt-5">
-            <CallButton copy={copy} variant="secondary" size="md" showNumber />
+            <CallButton variant="secondary" size="md" showNumber />
           </div>
         </Card>
       </Section>
@@ -169,7 +159,7 @@ export default async function RequirementsPage({ params }: Params) {
         </div>
       </Section>
 
-      <JsonLd data={faqSchema(copy, renderBmv)} />
+      <JsonLd data={faqSchema(renderBmv)} />
     </>
   );
 }

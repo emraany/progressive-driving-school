@@ -5,25 +5,17 @@ import { Container } from "@/components/ui/Container";
 import { ExternalLink } from "@/components/ui/ExternalLink";
 import { Section, SectionHeader } from "@/components/ui/Section";
 import { ClockIcon, MailIcon, MapIcon, PhoneIcon, PinIcon } from "@/components/ui/icons";
-import { getCopy } from "@/content/copy";
+import { copy } from "@/content/copy";
 import { courses } from "@/content/courses";
 import { formatAddress, hoursRange, mapsUrl, site } from "@/content/site";
 import { renderCourse } from "@/lib/copy-render";
-import { LOCALES, LOCALE_LABELS, type Locale } from "@/lib/i18n";
 import { buildMetadata } from "@/lib/seo";
 
-type Params = { params: Promise<{ lang: Locale }> };
-
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const { lang } = await params;
-  const copy = getCopy(lang);
-  return buildMetadata({
-    locale: lang,
-    path: "contact",
-    title: copy.contactPage.title,
-    description: copy.contactPage.description,
-  });
-}
+export const metadata: Metadata = buildMetadata({
+  path: "/contact",
+  title: copy.contactPage.title,
+  description: copy.contactPage.description,
+});
 
 function InfoRow({
   icon,
@@ -47,9 +39,7 @@ function InfoRow({
   );
 }
 
-export default async function ContactPage({ params }: Params) {
-  const { lang } = await params;
-  const copy = getCopy(lang);
+export default function ContactPage() {
   const page = copy.contactPage;
 
   const courseOptions = courses.map((course) => ({
@@ -57,11 +47,9 @@ export default async function ContactPage({ params }: Params) {
     label: `${renderCourse(copy.courses[course.id].shortName, course)} — ${course.price}`,
   }));
 
-  // Every language is offered here, not just the published ones: a Somali
-  // speaker reading the English site should still be able to ask for Somali.
-  const languageOptions = LOCALES.map((locale) => ({
-    value: locale,
-    label: LOCALE_LABELS[locale],
+  const languageOptions = site.languages.map((language) => ({
+    value: language.toLowerCase(),
+    label: language,
   }));
 
   return (
@@ -86,10 +74,16 @@ export default async function ContactPage({ params }: Params) {
                 >
                   {site.phone.display}
                 </a>
+                <p className="mt-1.5 text-sm font-medium text-brand-700">
+                  {copy.common.languagesNote}
+                </p>
               </InfoRow>
 
               <InfoRow icon={<MailIcon />} heading={page.emailHeading}>
-                <a href={`mailto:${site.email}`} className="break-all underline decoration-brand-300 underline-offset-4">
+                <a
+                  href={`mailto:${site.email}`}
+                  className="break-all underline decoration-brand-300 underline-offset-4"
+                >
                   {site.email}
                 </a>
               </InfoRow>
@@ -136,8 +130,6 @@ export default async function ContactPage({ params }: Params) {
               {copy.form.intro}
             </p>
             <ContactForm
-              copy={copy}
-              locale={lang}
               courseOptions={courseOptions}
               languageOptions={languageOptions}
             />

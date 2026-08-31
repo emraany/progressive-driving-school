@@ -1,9 +1,6 @@
-import type { Copy } from "@/content/copy/types";
+import { copy } from "@/content/copy";
 import type { Course } from "@/content/courses";
 import { renderCourse } from "@/lib/copy-render";
-import type { Locale } from "@/lib/i18n";
-import { registerHref } from "@/lib/nav";
-import { ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { CheckIcon } from "@/components/ui/icons";
 
@@ -15,15 +12,17 @@ function Chip({ children }: { children: React.ReactNode }) {
   );
 }
 
+/**
+ * No Register button here, deliberately. One sits in the sticky header on every
+ * page and one in the hero; repeating it on all three cards put six identical
+ * buttons on the courses page without telling anyone which course they were
+ * signing up for - the form asks that anyway.
+ */
 export function CourseCard({
   course,
-  copy,
-  locale,
   detailed = false,
 }: {
   course: Course;
-  copy: Copy;
-  locale: Locale;
   detailed?: boolean;
 }) {
   const c = copy.courses[course.id];
@@ -41,7 +40,7 @@ export function CourseCard({
         }`}
         aria-hidden={course.satisfiesClassD ? undefined : true}
       >
-        {course.satisfiesClassD ? copy.common.classDBadge : "\u00A0"}
+        {course.satisfiesClassD ? copy.common.classDBadge : " "}
       </p>
 
       <h3 className="text-(length:--text-h3) leading-snug font-semibold">
@@ -90,11 +89,6 @@ export function CourseCard({
       ) : (
         <p className="mt-5 text-sm leading-relaxed text-ink-700">{r(c.audience)}</p>
       )}
-
-      <div className="mt-7 flex-1" />
-      <ButtonLink href={registerHref(locale)} variant="primary" size="md" className="w-full">
-        {copy.actions.register}
-      </ButtonLink>
     </Card>
   );
 }

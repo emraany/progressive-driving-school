@@ -8,30 +8,20 @@ import { Container } from "@/components/ui/Container";
 import { Section, SectionHeader } from "@/components/ui/Section";
 import { ArrowRightIcon, CheckIcon } from "@/components/ui/icons";
 import { BMV_STEP_IDS } from "@/content/bmv";
-import { getCopy } from "@/content/copy";
+import { copy } from "@/content/copy";
 import { courses } from "@/content/courses";
 import { site } from "@/content/site";
 import { renderBmv } from "@/lib/copy-render";
-import { localePath, type Locale } from "@/lib/i18n";
-import { registerHref } from "@/lib/nav";
+import { REGISTER_HREF } from "@/lib/nav";
 import { buildMetadata } from "@/lib/seo";
 
-type Params = { params: Promise<{ lang: Locale }> };
+export const metadata: Metadata = buildMetadata({
+  path: "/",
+  title: copy.home.title,
+  description: copy.home.description,
+});
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const { lang } = await params;
-  const copy = getCopy(lang);
-  return buildMetadata({
-    locale: lang,
-    path: "",
-    title: copy.home.title,
-    description: copy.home.description,
-  });
-}
-
-export default async function HomePage({ params }: Params) {
-  const { lang } = await params;
-  const copy = getCopy(lang);
+export default function HomePage() {
   const { hero, coursesSection, trust, requirementsTeaser, serviceArea, finalCta } =
     copy.home;
 
@@ -53,10 +43,10 @@ export default async function HomePage({ params }: Params) {
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <ButtonLink href={registerHref(lang)} variant="primary" size="lg">
+                <ButtonLink href={REGISTER_HREF} variant="primary" size="lg">
                   {copy.actions.register}
                 </ButtonLink>
-                <CallButton copy={copy} variant="outline" size="lg" showNumber />
+                <CallButton variant="outline" size="lg" showNumber />
               </div>
 
               <p className="mt-6 flex items-center gap-2 text-sm text-ink-500">
@@ -76,21 +66,21 @@ export default async function HomePage({ params }: Params) {
 
       {/* Courses */}
       <Section id="courses" width="wide">
-        <SectionHeader
-          heading={coursesSection.heading}
-          lede={coursesSection.intro}
-        />
+        <SectionHeader heading={coursesSection.heading} lede={coursesSection.intro} />
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {courses.map((course) => (
-            <CourseCard key={course.id} course={course} copy={copy} locale={lang} />
+            <CourseCard key={course.id} course={course} />
           ))}
         </div>
-        <p className="mt-8">
-          <ButtonLink href={localePath(lang, "courses")} variant="outline" size="md">
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <ButtonLink href={REGISTER_HREF} variant="primary" size="md">
+            {copy.actions.register}
+          </ButtonLink>
+          <ButtonLink href="/courses" variant="outline" size="md">
             {copy.actions.viewCourses}
             <ArrowRightIcon className="h-4 w-4" />
           </ButtonLink>
-        </p>
+        </div>
       </Section>
 
       {/* Trust */}
@@ -133,11 +123,7 @@ export default async function HomePage({ params }: Params) {
               ))}
             </ol>
             <p className="mt-8">
-              <ButtonLink
-                href={localePath(lang, "requirements")}
-                variant="onDark"
-                size="md"
-              >
+              <ButtonLink href="/requirements" variant="onDark" size="md">
                 {copy.actions.viewRequirements}
                 <ArrowRightIcon className="h-4 w-4" />
               </ButtonLink>
@@ -174,12 +160,8 @@ export default async function HomePage({ params }: Params) {
               {finalCta.body}
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <CallButton copy={copy} variant="secondary" size="lg" showNumber />
-              <ButtonLink
-                href={localePath(lang, "contact")}
-                variant="outline"
-                size="lg"
-              >
+              <CallButton variant="secondary" size="lg" showNumber />
+              <ButtonLink href="/contact" variant="outline" size="lg">
                 {copy.actions.contactUs}
               </ButtonLink>
             </div>

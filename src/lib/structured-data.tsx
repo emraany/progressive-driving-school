@@ -1,7 +1,6 @@
+import { copy } from "@/content/copy";
 import { courses, type Course } from "@/content/courses";
-import type { Copy } from "@/content/copy/types";
 import { formatAddress, site } from "@/content/site";
-import { localePath, type Locale } from "./i18n";
 
 const ORG_ID = `${site.url}/#organization`;
 
@@ -13,7 +12,7 @@ const ORG_ID = `${site.url}/#organization`;
  * worse than publishing nothing - search engines surface it as fact. Add it
  * here once `site.hours.days` is confirmed.
  */
-export function organizationSchema(locale: Locale) {
+export function organizationSchema() {
   const a = site.address;
   return {
     "@context": "https://schema.org",
@@ -21,7 +20,9 @@ export function organizationSchema(locale: Locale) {
     "@id": ORG_ID,
     name: site.name,
     legalName: site.legalName,
-    url: `${site.url}${localePath(locale)}`,
+    url: site.url,
+    logo: `${site.url}${site.logo.full}`,
+    image: `${site.url}${site.logo.full}`,
     telephone: site.phone.display,
     email: site.email,
     address: {
@@ -37,7 +38,9 @@ export function organizationSchema(locale: Locale) {
       { "@type": "City", name: "Columbus, Ohio" },
     ],
     description: formatAddress(),
-    knowsLanguage: site.publishedLocales,
+    // Somali-speaking service is a genuine differentiator for this business,
+    // so it is declared to search engines as well as stated on the page.
+    knowsLanguage: site.languages,
   };
 }
 
@@ -49,15 +52,15 @@ function numericPrice(course: Course): string {
   return course.price.replace(/[^0-9.]/g, "");
 }
 
-export function courseSchema(locale: Locale, copy: Copy) {
+export function courseSchema() {
   return courses.map((course) => ({
     "@context": "https://schema.org",
     "@type": "Course",
     name: copy.courses[course.id].name,
     description: copy.courses[course.id].tagline,
-    url: `${site.url}${localePath(locale, "courses")}#${course.id}`,
+    url: `${site.url}/courses#${course.id}`,
     provider: { "@id": ORG_ID },
-    inLanguage: locale,
+    inLanguage: "en",
     offers: {
       "@type": "Offer",
       price: numericPrice(course),
@@ -68,14 +71,14 @@ export function courseSchema(locale: Locale, copy: Copy) {
   }));
 }
 
-export function faqSchema(copy: Copy, interpolated: (s: string) => string) {
+export function faqSchema(render: (s: string) => string) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     mainEntity: Object.values(copy.faq.items).map((item) => ({
       "@type": "Question",
-      name: interpolated(item.q),
-      acceptedAnswer: { "@type": "Answer", text: interpolated(item.a) },
+      name: render(item.q),
+      acceptedAnswer: { "@type": "Answer", text: render(item.a) },
     })),
   };
 }

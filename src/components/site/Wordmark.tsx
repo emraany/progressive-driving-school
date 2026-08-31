@@ -1,43 +1,37 @@
 import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/content/site";
-import { localePath, type Locale } from "@/lib/i18n";
 
 /**
- * Falls back to a typeset wordmark until a logo file exists. Set
- * `site.logo.src` and the real mark takes over - no layout change.
+ * The logo mark plus a typeset wordmark.
+ *
+ * The supplied logo is a stacked lockup whose own "PROGRESSIVE DRIVING SCHOOL
+ * LLC / COLUMBUS, OH" type would be about four pixels tall in a 64px header.
+ * So the emblem is used as the mark and the name is set in live text beside
+ * it: legible at every size, selectable, and translatable.
  */
-export function Wordmark({ locale }: { locale: Locale }) {
+export function Wordmark() {
   return (
-    <Link
-      href={localePath(locale)}
-      className="flex shrink-0 items-center gap-2.5 py-2"
-    >
-      {site.logo.src ? (
-        <Image
-          src={site.logo.src}
-          alt={site.name}
-          width={site.logo.width}
-          height={site.logo.height}
-          priority
-          className="h-9 w-auto sm:h-10"
-        />
-      ) : (
-        <>
-          <span
-            aria-hidden="true"
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-brand-700 font-display text-lg font-semibold text-white sm:h-10 sm:w-10"
-          >
-            P
-          </span>
-          <span className="font-display text-[0.98rem] leading-[1.15] font-semibold text-ink-900 sm:text-lg">
-            Progressive
-            <span className="block text-[0.7rem] font-sans font-medium tracking-[0.11em] text-ink-500 uppercase sm:text-[0.72rem]">
-              Driving School
-            </span>
-          </span>
-        </>
-      )}
+    <Link href="/" className="flex shrink-0 items-center gap-2.5 py-2">
+      <Image
+        src={site.logo.mark}
+        alt=""
+        aria-hidden="true"
+        width={site.logo.markWidth}
+        height={site.logo.markHeight}
+        priority
+        className="h-9 w-auto sm:h-10"
+      />
+      {/* On the narrowest phones (320px) the mark stands alone: the typeset
+          name plus the Register button and menu toggle will not fit together.
+          The accessible name below is always present. */}
+      <span className="hidden font-display text-[0.98rem] leading-[1.15] font-semibold text-ink-900 min-[360px]:block sm:text-lg">
+        Progressive
+        <span className="block font-sans text-[0.7rem] font-medium tracking-[0.11em] text-ink-500 uppercase sm:text-[0.72rem]">
+          Driving School
+        </span>
+      </span>
+      <span className="sr-only">{site.name} — home</span>
     </Link>
   );
 }

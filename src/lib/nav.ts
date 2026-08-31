@@ -1,25 +1,25 @@
-import type { Copy } from "@/content/copy/types";
-import { localePath, type Locale } from "./i18n";
+import { copy } from "@/content/copy";
 
 export interface NavItem {
   href: string;
   label: string;
 }
 
-export function navItems(locale: Locale, copy: Copy): NavItem[] {
+/** Locale-less routes, in nav and sitemap order. */
+export const ROUTES = ["/", "/courses", "/requirements", "/contact"] as const;
+
+export function navItems(): NavItem[] {
   return [
-    { href: localePath(locale), label: copy.nav.home },
-    { href: localePath(locale, "courses"), label: copy.nav.courses },
-    { href: localePath(locale, "requirements"), label: copy.nav.requirements },
-    { href: localePath(locale, "contact"), label: copy.nav.contact },
+    { href: "/", label: copy.nav.home },
+    { href: "/courses", label: copy.nav.courses },
+    { href: "/requirements", label: copy.nav.requirements },
+    { href: "/contact", label: copy.nav.contact },
   ];
 }
 
 /**
- * Every "Register" control in the site points here, never at an external URL
- * directly. The real destination lives in one place (site.registerUrl) and is
- * resolved by the /register route, so swapping it in is a one-line edit.
+ * Every "Register" control links here, never to the external URL directly, so
+ * the destination lives in exactly one place (site.registerUrl) and swapping
+ * it is a one-line change.
  */
-export function registerHref(locale: Locale): string {
-  return localePath(locale, "register");
-}
+export const REGISTER_HREF = "/register";

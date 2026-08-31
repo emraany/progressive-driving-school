@@ -4,28 +4,19 @@ import { CourseCard } from "@/components/site/CourseCard";
 import { ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Section, SectionHeader } from "@/components/ui/Section";
-import { getCopy } from "@/content/copy";
+import { copy } from "@/content/copy";
 import { courses } from "@/content/courses";
-import { localePath, type Locale } from "@/lib/i18n";
+import { REGISTER_HREF } from "@/lib/nav";
 import { buildMetadata } from "@/lib/seo";
 import { courseSchema, JsonLd } from "@/lib/structured-data";
 
-type Params = { params: Promise<{ lang: Locale }> };
+export const metadata: Metadata = buildMetadata({
+  path: "/courses",
+  title: copy.coursesPage.title,
+  description: copy.coursesPage.description,
+});
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const { lang } = await params;
-  const copy = getCopy(lang);
-  return buildMetadata({
-    locale: lang,
-    path: "courses",
-    title: copy.coursesPage.title,
-    description: copy.coursesPage.description,
-  });
-}
-
-export default async function CoursesPage({ params }: Params) {
-  const { lang } = await params;
-  const copy = getCopy(lang);
+export default function CoursesPage() {
   const page = copy.coursesPage;
 
   return (
@@ -37,19 +28,15 @@ export default async function CoursesPage({ params }: Params) {
       <Section width="wide">
         <div className="grid items-start gap-6 md:grid-cols-2 lg:grid-cols-3">
           {courses.map((course) => (
-            <CourseCard
-              key={course.id}
-              course={course}
-              copy={copy}
-              locale={lang}
-              detailed
-            />
+            <CourseCard key={course.id} course={course} detailed />
           ))}
         </div>
       </Section>
 
       <Section tone="sunken" width="wide">
         <div className="grid gap-6 lg:grid-cols-2">
+          {/* The single Register call to action on this page. The form asks
+              which course you want, so one button covers all three. */}
           <Card className="p-7 sm:p-9">
             <h2 className="text-(length:--text-h3) font-semibold">
               {page.enrollment.heading}
@@ -57,6 +44,11 @@ export default async function CoursesPage({ params }: Params) {
             <p className="mt-3 text-base leading-relaxed text-ink-700">
               {page.enrollment.body}
             </p>
+            <div className="mt-7">
+              <ButtonLink href={REGISTER_HREF} variant="primary" size="lg">
+                {copy.actions.register}
+              </ButtonLink>
+            </div>
           </Card>
 
           <Card className="p-7 sm:p-9">
@@ -67,12 +59,8 @@ export default async function CoursesPage({ params }: Params) {
               {page.help.body}
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <CallButton copy={copy} variant="secondary" size="md" showNumber />
-              <ButtonLink
-                href={localePath(lang, "contact")}
-                variant="outline"
-                size="md"
-              >
+              <CallButton variant="secondary" size="md" showNumber />
+              <ButtonLink href="/contact" variant="outline" size="md">
                 {copy.actions.contactUs}
               </ButtonLink>
             </div>
@@ -80,7 +68,7 @@ export default async function CoursesPage({ params }: Params) {
         </div>
       </Section>
 
-      <JsonLd data={courseSchema(lang, copy)} />
+      <JsonLd data={courseSchema()} />
     </>
   );
 }

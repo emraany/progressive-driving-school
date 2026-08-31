@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { Section } from "@/components/ui/Section";
 import { site } from "@/content/site";
-import { DEFAULT_LOCALE, localePath } from "@/lib/i18n";
 
-/** Deliberately English-only: an unmatched URL has no reliable locale. */
 export default function NotFound() {
   return (
     <Section width="narrow" className="text-center">
@@ -16,10 +14,7 @@ export default function NotFound() {
         .
       </p>
       <p className="mt-8">
-        <Link
-          href={localePath(DEFAULT_LOCALE)}
-          className="font-semibold text-brand-700 underline underline-offset-4"
-        >
+        <Link href="/" className="font-semibold text-brand-700 underline underline-offset-4">
           Go to the home page
         </Link>
       </p>

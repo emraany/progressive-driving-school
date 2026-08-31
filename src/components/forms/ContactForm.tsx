@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import type { Copy } from "@/content/copy/types";
+import { copy } from "@/content/copy";
 import { site } from "@/content/site";
 import { buttonClasses } from "@/components/ui/Button";
 import { CheckIcon, PhoneIcon } from "@/components/ui/icons";
@@ -53,7 +53,7 @@ function Field({
       </label>
       {children}
       {error ? (
-        <p id={`${id}-error`} className="mt-1.5 text-sm font-medium text-accent-700">
+        <p id={`${id}-error`} className="mt-1.5 text-sm font-medium text-danger-700">
           {error}
         </p>
       ) : null}
@@ -62,13 +62,9 @@ function Field({
 }
 
 export function ContactForm({
-  copy,
-  locale,
   courseOptions,
   languageOptions,
 }: {
-  copy: Copy;
-  locale: string;
   courseOptions: CourseOption[];
   languageOptions: LanguageOption[];
 }) {
@@ -121,7 +117,7 @@ export function ContactForm({
 
     const result = await submitContact({
       ...values,
-      locale,
+      locale: "en",
       courseLabel,
       languageLabel,
       subject: `Website enquiry from ${values.name}`,
@@ -160,7 +156,7 @@ export function ContactForm({
       {status === "error" ? (
         <div
           role="alert"
-          className="rounded-lg border border-accent-500 bg-accent-50 p-4"
+          className="rounded-lg border border-danger-500 bg-danger-50 p-4"
         >
           <p className="font-semibold text-ink-900">{f.errorHeading}</p>
           {/* A form outage must never cost a lead: the fallback is the phone. */}
